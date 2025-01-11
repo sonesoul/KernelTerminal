@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
-namespace MonoconsoleLib
+namespace Monoconsole
 {
     internal class NativeInterop
     {
@@ -48,5 +50,49 @@ namespace MonoconsoleLib
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         #endregion
+
+        private readonly static TextReader _originalIn = Console.In;
+        private readonly static TextWriter _originalOut = Console.Out;
+        private readonly static TextWriter _originalErr = Console.Error;
+
+        public static void HideButtons(IntPtr handle)
+        {
+            int style = GetWindowLong(handle, GWL_STYLE);
+            style &= ~WS_SYSMENU;
+            _ = SetWindowLong(handle, GWL_STYLE, style);
+        }
+        public static void HideFromTaskbar(IntPtr handle) 
+        {
+            int exStyle = GetWindowLong(handle, GWL_EXSTYLE);
+            _ = SetWindowLong(handle, GWL_EXSTYLE, (exStyle & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW);
+        }
+
+        public static void ResetConsole()
+        {
+            Console.SetOut(_originalOut);
+            Console.SetError(_originalErr);
+            Console.SetIn(_originalIn);
+        }
+        public static IntPtr GetNewWindow()
+        {
+            Console.SetIn(
+                new StreamReader(
+                    new FileStream(
+                        new SafeFileHandle(GetStdHandle(STD_INPUT_HANDLE), false), FileAccess.Read)));
+            
+            Console.SetOut(
+                new StreamWriter(
+                    new FileStream(
+                        new SafeFileHandle(GetStdHandle(STD_OUTPUT_HANDLE), false), FileAccess.Write))
+                { AutoFlush = true });
+
+            Console.SetError(
+                new StreamWriter(
+                    new FileStream(
+                        new SafeFileHandle(GetStdHandle(STD_ERROR_HANDLE), false), FileAccess.Write))
+                { AutoFlush = true });
+
+            return GetConsoleWindow();
+        }
     }
 }
