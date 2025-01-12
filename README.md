@@ -49,21 +49,13 @@ Terminal.Execute("your command"); //blocks the thread on which it was called
 await Terminal.ExecuteAsync("your async command");
 ```
 
-### Colors
-You can modify text colors by setting:
-```csharp
-Monoconsole.ForeColor = ConsoleColor.Green; //sets the color of characters
-Monoconsole.BackColor = ConsoleColor.White; //sets the background color of characters 
-Monoconsole.InfoColor = ConsoleColor.Blue; //sets the color that used in the Monoconsole.WriteInfo
-Monoconsole.ErrorColor = ConsoleColor.Magenta; //sets the color that used in the Monoconsole.WriteError
-```
 And you can pass the color as an argument:
 ```csharp
-Monoconsole.WriteLine("Red color", ConsoleColor.Red);
-//writes "Red color" using a red color
+Terminal.WriteLine("Red", ConsoleColor.Red);
+//writes "Red" using a red color
 
-Monoconsole.Write("Blue color", ConsoleColor.Blue);
-//writes "Blue color" using a blue color
+Terminal.Write("Blue", ConsoleColor.Blue);
+//writes "Blue" using a blue color
 ```
 
 ### Events
@@ -76,7 +68,7 @@ Terminal provides several events, such as:
 ## Known Issue
 When the console window is closed manually or the process is terminated (e.g., through Task Manager), 
 the **main application thread is also terminated**. This happens because the console process is linked to the main application thread, and closing it forces the entire application to stop.
-To avoid this, **do not close the console manually** — use `Monoconsole.Close()` instead. By default, the console window has no buttons 
+To avoid this, **do not close the console manually** — use `Terminal.Close()` instead. By default, the console window has no buttons 
 (such as close or fullscreen) and does not appear in the taskbar.  You can customize button visibility or show the console window in the taskbar, but do so at your own risk:
 ```csharp
 Terminal.HideFromTaskbar = false; //enables showing in taskbar
