@@ -231,9 +231,7 @@ namespace KernelTerminal
         /// <returns>Task representing the asynchronous operation.</returns>
         public static Task Write<T>(T value, ConsoleColor color = ConsoleColor.Gray)
         {
-            void Write() => Console.Write(value.ToString());
-
-            return WriteColoredAsync(Write, color);
+            return WriteColoredAsync(() => Console.Write(value.ToString()), color);
         }
         /// <summary>
         /// Writes the specified value to the console followed by a newline, using the specified text color.
@@ -241,10 +239,13 @@ namespace KernelTerminal
         /// <returns>Task representing the asynchronous operation.</returns>
         public static Task WriteLine<T>(T value, ConsoleColor color = ConsoleColor.Gray)
         {
-            void Write() => Console.WriteLine(value.ToString());
-
-            return WriteColoredAsync(Write, color);
+            return WriteColoredAsync(() => Console.WriteLine(value.ToString()), color);
         }
+        /// <summary>
+        /// Writes a newline symbol to the console followed by a newline, using the specified text color.
+        /// </summary>
+        /// <returns>Task representing the asynchronous operation.</returns>
+        public static Task WriteLine() => WriteLine("\n");
         /// <summary>
         /// Works like <see cref="WriteLine"/> but uses <see cref="ConsoleColor.Red"/> as second parameter.
         /// </summary>
