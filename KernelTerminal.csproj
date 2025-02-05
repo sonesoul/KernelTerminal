@@ -7,8 +7,8 @@
     <ProjectGuid>{6037014B-DB9B-409F-97F2-B78A84C8AFF3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Monoconsole</RootNamespace>
-    <AssemblyName>monoconsole</AssemblyName>
+    <RootNamespace>KernelTerminal</RootNamespace>
+    <AssemblyName>KernelTerminal</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\monoconsole.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\KernelTerminal.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

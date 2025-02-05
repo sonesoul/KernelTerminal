@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Monoconsole
+namespace KernelTerminal
 {
     /// <summary>
     /// Provides methods and properties to manage a simple console window.
