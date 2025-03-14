@@ -16,8 +16,12 @@ namespace KernelTerminal
         /// <summary>
         /// Gets or sets the foreground color of the text in the console.
         /// </summary>
-        public static ConsoleColor ForeColor { get => Console.ForegroundColor; set => Console.ForegroundColor = value; }
-        
+        public static ConsoleColor ForegroundColor { get => Console.ForegroundColor; set => Console.ForegroundColor = value; }
+        /// <summary>
+        /// Gets or sets the background color of the text in the console.
+        /// </summary>
+        public static ConsoleColor BackgroundColor { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
+
         /// <summary>
         /// Gets a value indicating whether the console is currently opened.
         /// </summary>
@@ -39,7 +43,7 @@ namespace KernelTerminal
         /// <summary>
         /// Gets or sets the title of the console window.
         /// </summary>
-        public static string Title { get; set; } = "monoconsole";
+        public static string Title { get; set; } = "Terminal";
 
         /// <summary>
         /// Gets or sets handler that receives input from console window. Also receives input from the <see cref="Execute(string)"/> or <see cref="ExecuteAsync(string)"/>
@@ -156,7 +160,7 @@ namespace KernelTerminal
             }
             catch (Exception ex)
             {
-                WriteError($"{ex.Message} [sync]").Wait();
+                WriteLine($"{ex.Message} [sync]").Wait();
                 ExceptionHandler?.Invoke(ex);
             }
 
@@ -176,13 +180,10 @@ namespace KernelTerminal
             }
             catch (Exception ex)
             {
-                await WriteError($"{ex.Message} [async]");
+                await WriteLine($"{ex.Message} [async]");
                 ExceptionHandler?.Invoke(ex);
             }
         }
-        /// <summary>
-        /// Executes a command on the specified synchronization context, handling exceptions if they occur.
-        /// </summary>
         
         private static void ConsoleRead()
         {
@@ -199,7 +200,7 @@ namespace KernelTerminal
                 }
                 catch (Exception ex)
                 {
-                    WriteError($"{ex.Message} [read]").Wait(CancellationToken.None);
+                    WriteLine($"{ex.Message} [read]").Wait(CancellationToken.None);
                 }
             }
         }
@@ -217,7 +218,7 @@ namespace KernelTerminal
                 NativeInterop.HideFromTaskbar(windowHandle);
             }
 
-            ForeColor = ConsoleColor.Yellow;
+            ForegroundColor = ConsoleColor.Yellow;
 
             Console.Title = Title;
             Console.OutputEncoding = Encoding.UTF8;
@@ -226,33 +227,34 @@ namespace KernelTerminal
         #region Output
 
         /// <summary>
-        /// Writes the specified value to the console without a newline, using the specified text color.
+        /// Writes the specified value to the console without a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task Write<T>(T value, ConsoleColor color = ConsoleColor.Gray)
+        public static Task Write<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            return WriteColoredAsync(() => Console.Write(value.ToString()), color);
+            return WriteColoredAsync(() => Console.Write(value.ToString()), foreColor, backColor);
         }
         /// <summary>
-        /// Writes the specified value to the console followed by a newline, using the specified text color.
+        /// Writes the specified value to the console followed by a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task WriteLine<T>(T value, ConsoleColor color = ConsoleColor.Gray)
+        public static Task WriteLine<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            return WriteColoredAsync(() => Console.WriteLine(value.ToString()), color);
+            return WriteColoredAsync(() => Console.WriteLine(value.ToString()), foreColor, backColor);
         }
         /// <summary>
-        /// Writes a newline symbol to the console followed by a newline, using the specified text color.
+        /// Writes a newline symbol to the console.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task WriteLine() => WriteLine("\n");
-        /// <summary>
-        /// Works like <see cref="WriteLine"/> but uses <see cref="ConsoleColor.Red"/> as second parameter.
-        /// </summary>
-        /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task WriteError(string message) => WriteLine(message, ConsoleColor.Red);
+        public static Task WriteLine() => Write('\n');
 
-        private static async Task WriteColoredAsync(Action writeAction, ConsoleColor color)
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        /// <returns></returns>
+        public static Task Clear() => Task.Run(Console.Clear);
+
+        private static async Task WriteColoredAsync(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
             try
             {
@@ -262,12 +264,16 @@ namespace KernelTerminal
                     {
                         if (IsOpened)
                         {
-                            var temp = ForeColor;
-                            ForeColor = color;
+                            var tempFore = ForegroundColor;
+                            var tempBack = BackgroundColor;
+
+                            ForegroundColor = foreColor;
+                            BackgroundColor = backColor;
 
                             writeAction();
 
-                            ForeColor = temp;
+                            ForegroundColor = tempFore;
+                            BackgroundColor = tempBack;
                         }
                     }
                 });
