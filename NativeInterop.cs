@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace KernelTerminal
 {
-    internal class NativeInterop
+    internal static class NativeInterop
     {
         #region ConsoleConstants
         public const uint STD_INPUT_HANDLE = 0xFFFFFFF6;
