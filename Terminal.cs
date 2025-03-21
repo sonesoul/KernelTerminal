@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using KernelTerminal.Execution;
 
 namespace KernelTerminal
 {
@@ -50,6 +51,14 @@ namespace KernelTerminal
         /// Gets or sets the handler that receives exceptions occur in <see cref="UpdateHandler"/>.
         /// </summary>
         public static Action<Exception> ExceptionHandler { get; set; }
+        /// <summary>
+        /// Occurs when the console is opened.
+        /// </summary>
+        public static Action Opened { get; set; }
+        /// <summary>
+        /// Occurs when the console is closed.
+        /// </summary>
+        public static Action Closed { get; set; }
 
         /// <summary>
         /// Gets a value indicating the current handle of the console window.
@@ -57,22 +66,15 @@ namespace KernelTerminal
         ///<returns>Console window handle of the console if it is opened; otherwise, null.</returns>
         public static IntPtr? WindowHandle { get; private set; } = null;
 
-
-        /// <summary>
-        /// Occurs when the console is opened.
-        /// </summary>
-        public static event Action Opened;
-        /// <summary>
-        /// Occurs when the console is closed.
-        /// </summary>
-        public static event Action Closed;
-
         private readonly static object _writeLock = new object();
-        private static Action _updateHandler;
+        private static Action _updateHandler = () => Console.ReadLine();
 
         #endregion
 
-        static Terminal() => Task.Run(Update);
+        static Terminal()
+        {
+            Task.Run(Update);
+        }
 
         #region Open/Close
         /// <summary>

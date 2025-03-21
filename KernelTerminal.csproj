@@ -22,6 +22,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -42,6 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Execution\Commands\Async.cs" />
+    <Compile Include="Execution\Commands\Batch.cs" />
+    <Compile Include="Execution\Commands\SetSize.cs" />
+    <Compile Include="Execution\Commands\Wait.cs" />
+    <Compile Include="Execution\Commands\Write.cs" />
+    <Compile Include="Execution\Instruction.cs" />
+    <Compile Include="Execution\Command.cs" />
+    <Compile Include="Execution\Executor.cs" />
+    <Compile Include="Execution\Commands\SetColor.cs" />
+    <Compile Include="Execution\InvalidSyntaxException.cs" />
     <Compile Include="Terminal.cs" />
     <Compile Include="NativeInterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
