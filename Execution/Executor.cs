@@ -11,8 +11,6 @@ namespace KernelTerminal.Execution
 
     public static class Executor
     {
-        public static event Action<Command> Executed;
-
         private readonly static CommandFactory _creators = new CommandFactory();
 
         public static void SetupTerminal()
@@ -101,8 +99,7 @@ namespace KernelTerminal.Execution
             }
 
         }
-
-
+        
         public static IEnumerable<string> GetRegisteredCommands() => _creators.Keys;
 
         private static void Update()
@@ -110,12 +107,7 @@ namespace KernelTerminal.Execution
             string input = Console.ReadLine();
 
             Command instance = Create(input);
-
-            if (instance != null)
-            {
-                instance.Execute();
-                Executed?.Invoke(instance);
-            }
+            instance?.Execute();
         }
         private static void HandleException(Exception ex) => Terminal.WriteLine(ex.Message, ConsoleColor.Red).Wait();
         private static void HandleOpened()
