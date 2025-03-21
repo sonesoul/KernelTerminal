@@ -1,6 +1,6 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    public class Batch : Command
+    internal class Batch : Command
     {
         public Batch(Instruction instruction) : base(instruction) { }
         public override void Execute()
