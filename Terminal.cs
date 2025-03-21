@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace KernelTerminal
@@ -27,10 +26,7 @@ namespace KernelTerminal
         /// </summary>
         /// <returns>true if the console is opened; otherwise, false.</returns>
         public static bool IsOpened { get; private set; } = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether to enable or disable writing commands that have been executed.
-        /// </summary>
-        public static bool WriteExecuted { get; set; } = true;
+        
         /// <summary>
         /// Gets or sets a value indicating whether to hide the console's system buttons.
         /// </summary>
@@ -46,14 +42,15 @@ namespace KernelTerminal
         public static string Title { get; set; } = "Terminal";
 
         /// <summary>
-        /// Gets or sets handler that receives input from console window. Also receives input from the <see cref="Execute(string)"/> or <see cref="ExecuteAsync(string)"/>
+        /// Gets or sets the handler for periodic updates. 
+        /// Exceptions during execution will be passed to <see cref="ExceptionHandler"/>.
         /// </summary>
-        public static Action<string> Handler { get; set; }
+        public static Action UpdateHandler { get => _updateHandler; set => _updateHandler = value ?? throw new ArgumentNullException(nameof(value)); }
         /// <summary>
-        /// Gets or sets the handler that receives exceptions thrown in <see cref="Execute(string)"/> or <see cref="ExecuteAsync"/> methods.
+        /// Gets or sets the handler that receives exceptions occur in <see cref="UpdateHandler"/>.
         /// </summary>
         public static Action<Exception> ExceptionHandler { get; set; }
-       
+
         /// <summary>
         /// Gets a value indicating the current handle of the console window.
         /// </summary>
@@ -71,10 +68,11 @@ namespace KernelTerminal
         public static event Action Closed;
 
         private readonly static object _writeLock = new object();
+        private static Action _updateHandler;
 
         #endregion
 
-        static Terminal() => Task.Run(ConsoleRead);
+        static Terminal() => Task.Run(Update);
 
         #region Open/Close
         /// <summary>
@@ -94,6 +92,7 @@ namespace KernelTerminal
             CreateWindow();
 
             IsOpened = true;
+
             Opened?.Invoke();
 
             return true;
@@ -143,64 +142,17 @@ namespace KernelTerminal
         }
         #endregion
 
-        /// <summary>
-        /// Pushes a command to the <see cref="Handler"/>
-        /// </summary>
-        public static void Execute(string command)
-        {
-            try
-            {
-                Task.Run(() =>
-                {
-                    if (WriteExecuted)
-                        WriteLine("> " + command, ConsoleColor.DarkYellow).Wait();
-
-                    Handler?.Invoke(command);
-                }).Wait();
-            }
-            catch (Exception ex)
-            {
-                WriteLine($"{ex.Message} [sync]").Wait();
-                ExceptionHandler?.Invoke(ex);
-            }
-
-        }
-        /// <summary>
-        /// Asynchronously pushes a command to the <see cref="Handler"/>
-        /// </summary>
-        /// <returns>Task representing the asynchronous operation.</returns>
-        public static async Task ExecuteAsync(string command)
-        {
-            try
-            {
-                if (WriteExecuted)
-                    await WriteLine("> " + command, ConsoleColor.Blue);
-
-                await Task.Run(() => Handler?.Invoke(command));
-            }
-            catch (Exception ex)
-            {
-                await WriteLine($"{ex.Message} [async]");
-                ExceptionHandler?.Invoke(ex);
-            }
-        }
-        
-        private static void ConsoleRead()
+        private static void Update()
         {
             while (true)
             {
                 try
                 {
-                    string input = Console.ReadLine();
-
-                    if (input == null)
-                        continue;
-
-                    Handler?.Invoke(input);
+                    UpdateHandler();
                 }
                 catch (Exception ex)
                 {
-                    WriteLine($"{ex.Message} [read]").Wait(CancellationToken.None);
+                    ExceptionHandler?.Invoke(ex);
                 }
             }
         }
