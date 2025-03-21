@@ -11,7 +11,19 @@ namespace KernelTerminal.Execution
 
     public static class Executor
     {
-        private readonly static CommandFactory _creators = new CommandFactory();
+        private readonly static CommandFactory _creators = new CommandFactory()
+        {
+            ["size"] = i => new SetSize(i),
+            ["color"] = i => new SetColor(i),
+            ["write"] = i => new Write(i, false),
+            ["writel"] = i => new Write(i, true),
+
+            ["async"] = i => new Async(i),
+            ["batch"] = i => new Batch(i),
+            ["wait"] = i => new Wait(i),
+
+            ["exit"] = i => new Exit(i)
+        };
 
         public static void SetupTerminal()
         {
@@ -23,20 +35,6 @@ namespace KernelTerminal.Execution
             Terminal.ExceptionHandler = HandleException;
 
             Terminal.New();
-
-            var factory = new CommandFactory()
-            {
-                ["size"] = i => new SetSize(i),
-                ["color"] = i => new SetColor(i),
-                ["write"] = i => new Write(i, false),
-                ["writel"] = i => new Write(i, true),
-
-                ["async"] = i => new Async(i),
-                ["batch"] = i => new Batch(i),
-                ["wait"] = i => new Wait(i),
-            };
-
-            RegisterFactory(factory);
         }
 
         public static Command Create(string stringCommand)
