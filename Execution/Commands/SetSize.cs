@@ -2,7 +2,7 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    public class SetSize : Command
+    internal class SetSize : Command
     {
         public SetSize(Instruction instruction) : base(instruction) { }    
         public override void Execute()

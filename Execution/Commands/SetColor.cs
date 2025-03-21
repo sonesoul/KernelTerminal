@@ -2,7 +2,7 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    public class SetColor : Command
+    internal class SetColor : Command
     {
         public SetColor(Instruction instruction) : base(instruction) { }
         public override void Execute()

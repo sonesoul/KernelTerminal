@@ -1,6 +1,6 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    public class Write : Command
+    internal class Write : Command
     {
         public bool AppendNewLine { get; set; }
 
