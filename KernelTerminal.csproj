@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Execution\Commands\Async.cs" />
     <Compile Include="Execution\Commands\Batch.cs" />
+    <Compile Include="Execution\Commands\Exit.cs" />
     <Compile Include="Execution\Commands\SetSize.cs" />
     <Compile Include="Execution\Commands\Wait.cs" />
     <Compile Include="Execution\Commands\Write.cs" />

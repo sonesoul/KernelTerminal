@@ -33,8 +33,6 @@ namespace KernelTerminal.Execution
             Terminal.Opened = HandleOpened;
             Terminal.UpdateHandler = Update;
             Terminal.ExceptionHandler = HandleException;
-
-            Terminal.New();
         }
 
         public static Command Create(string stringCommand)
