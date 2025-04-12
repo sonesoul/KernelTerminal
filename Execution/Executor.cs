@@ -25,14 +25,6 @@ namespace KernelTerminal.Execution
             ["exit"] = i => new Exit(i)
         };
 
-        public static void SetupTerminal()
-        {
-            Terminal.HideFromTaskbar = false;
-            Terminal.HideButtons = false;
-
-            Terminal.Opened = HandleOpened;
-        }
-
         public static Command Create(string stringCommand)
         {
             if (string.IsNullOrWhiteSpace(stringCommand))
@@ -95,28 +87,5 @@ namespace KernelTerminal.Execution
         }
         
         public static IEnumerable<string> GetRegisteredCommands() => _creators.Keys;
-
-        private static void HandleOpened()
-        {
-            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var sb = new StringBuilder();
-            var rnd = new Random();
-
-            for (int i = 0; i < 5; i++)
-            {
-                int index = rnd.Next(chars.Length);
-                sb.Append(chars[index]);
-            }
-
-            List<ConsoleColor> colors =
-                Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>()
-                .Where(c => c != ConsoleColor.Black)
-                .ToList();
-
-            int colorIndex = rnd.Next(colors.Count);
-
-            Terminal.WriteLine($"| KernelTerminal [{sb}]\n", colors[colorIndex]);
-            Console.SetWindowSize(60, 15);
-        }
     }
 }
