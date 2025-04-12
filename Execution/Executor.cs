@@ -31,8 +31,6 @@ namespace KernelTerminal.Execution
             Terminal.HideButtons = false;
 
             Terminal.Opened = HandleOpened;
-            Terminal.UpdateHandler = Update;
-            Terminal.ExceptionHandler = HandleException;
         }
 
         public static Command Create(string stringCommand)
@@ -98,14 +96,6 @@ namespace KernelTerminal.Execution
         
         public static IEnumerable<string> GetRegisteredCommands() => _creators.Keys;
 
-        private static void Update()
-        {
-            string input = Console.ReadLine();
-
-            Command instance = Create(input);
-            instance?.Execute();
-        }
-        private static void HandleException(Exception ex) => Terminal.WriteLine(ex.Message, ConsoleColor.Red).Wait();
         private static void HandleOpened()
         {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

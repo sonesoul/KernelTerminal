@@ -43,15 +43,6 @@ namespace KernelTerminal
         public static string Title { get; set; } = "Terminal";
 
         /// <summary>
-        /// Gets or sets the handler for periodic updates. 
-        /// Exceptions during execution will be passed to <see cref="ExceptionHandler"/>.
-        /// </summary>
-        public static Action UpdateHandler { get => _updateHandler; set => _updateHandler = value ?? throw new ArgumentNullException(nameof(value)); }
-        /// <summary>
-        /// Gets or sets the handler that receives exceptions occur in <see cref="UpdateHandler"/>.
-        /// </summary>
-        public static Action<Exception> ExceptionHandler { get; set; }
-        /// <summary>
         /// Occurs when the console is opened.
         /// </summary>
         public static Action Opened { get; set; }
@@ -67,14 +58,8 @@ namespace KernelTerminal
         public static IntPtr? WindowHandle { get; private set; } = null;
 
         private readonly static object _writeLock = new object();
-        private static Action _updateHandler = () => Console.ReadLine();
-
+        
         #endregion
-
-        static Terminal()
-        {
-            Task.Run(Update);
-        }
 
         #region Open/Close
         /// <summary>
@@ -144,20 +129,6 @@ namespace KernelTerminal
         }
         #endregion
 
-        private static void Update()
-        {
-            while (true)
-            {
-                try
-                {
-                    UpdateHandler();
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler?.Invoke(ex);
-                }
-            }
-        }
         private static void CreateWindow()
         {
             IntPtr windowHandle;
