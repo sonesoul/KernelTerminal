@@ -28,7 +28,7 @@ namespace KernelTerminal.Execution
 
                     if (c == Command.CloseBracket)
                     {
-                        if (depth < 1 || (depth > 0 && i == (RawString.Length - 1)))
+                        if (depth < 1)
                             throw invalidSyntax;
 
                         depth--;
