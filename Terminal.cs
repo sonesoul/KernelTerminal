@@ -155,23 +155,23 @@ namespace KernelTerminal
         /// Writes the specified value to the console without a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static void Write<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
+        public static void Write(string value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            WriteColored(() => Console.Write(value.ToString()), foreColor, backColor);
+            WriteColored(() => Console.Write(value), foreColor, backColor);
         }
         /// <summary>
         /// Writes the specified value to the console followed by a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static void WriteLine<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
+        public static void WriteLine(string value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            WriteColored(() => Console.WriteLine(value.ToString()), foreColor, backColor);
+            WriteColored(() => Console.WriteLine(value), foreColor, backColor);
         }
         /// <summary>
         /// Writes a newline symbol to the console.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static void WriteLine() => Write('\n');
+        public static void WriteLine() => Write(Environment.NewLine);
 
         private static void WriteColored(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
