@@ -9,7 +9,7 @@ namespace KernelTerminal.Execution.Commands
         {
             if (RawString.Length == 0)
             {
-                Terminal.WriteLine(Terminal.ForegroundColor);
+                Terminal.WriteLine(Terminal.ForegroundColor.ToString());
             }
             else
             {
