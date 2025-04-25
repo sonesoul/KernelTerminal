@@ -173,12 +173,6 @@ namespace KernelTerminal
         /// <returns>Task representing the asynchronous operation.</returns>
         public static void WriteLine() => Write('\n');
 
-        /// <summary>
-        /// Clears the console.
-        /// </summary>
-        /// <returns></returns>
-        public static Task Clear() => Task.Run(Console.Clear);
-
         private static void WriteColored(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
             lock (_writeLock)
