@@ -185,10 +185,19 @@ namespace KernelTerminal
                     ForegroundColor = foreColor;
                     BackgroundColor = backColor;
 
-                    writeAction();
-
-                    ForegroundColor = tempFore;
-                    BackgroundColor = tempBack;
+                    try
+                    {
+                        writeAction();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        ForegroundColor = tempFore;
+                        BackgroundColor = tempBack;
+                    }
                 }
             }
         }
