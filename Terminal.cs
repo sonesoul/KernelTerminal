@@ -155,23 +155,23 @@ namespace KernelTerminal
         /// Writes the specified value to the console without a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task Write<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
+        public static void Write<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            return WriteColoredAsync(() => Console.Write(value.ToString()), foreColor, backColor);
+            WriteColoredAsync(() => Console.Write(value.ToString()), foreColor, backColor);
         }
         /// <summary>
         /// Writes the specified value to the console followed by a newline, using the specified foreground color.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task WriteLine<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
+        public static void WriteLine<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            return WriteColoredAsync(() => Console.WriteLine(value.ToString()), foreColor, backColor);
+            WriteColoredAsync(() => Console.WriteLine(value.ToString()), foreColor, backColor);
         }
         /// <summary>
         /// Writes a newline symbol to the console.
         /// </summary>
         /// <returns>Task representing the asynchronous operation.</returns>
-        public static Task WriteLine() => Write('\n');
+        public static void WriteLine() => Write('\n');
 
         /// <summary>
         /// Clears the console.
@@ -179,29 +179,26 @@ namespace KernelTerminal
         /// <returns></returns>
         public static Task Clear() => Task.Run(Console.Clear);
 
-        private static async Task WriteColoredAsync(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
+        private static void WriteColoredAsync(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
             try
             {
-                await Task.Run(() =>
+                lock (_writeLock)
                 {
-                    lock (_writeLock)
+                    if (IsOpened)
                     {
-                        if (IsOpened)
-                        {
-                            var tempFore = ForegroundColor;
-                            var tempBack = BackgroundColor;
+                        var tempFore = ForegroundColor;
+                        var tempBack = BackgroundColor;
 
-                            ForegroundColor = foreColor;
-                            BackgroundColor = backColor;
+                        ForegroundColor = foreColor;
+                        BackgroundColor = backColor;
 
-                            writeAction();
+                        writeAction();
 
-                            ForegroundColor = tempFore;
-                            BackgroundColor = tempBack;
-                        }
+                        ForegroundColor = tempFore;
+                        BackgroundColor = tempBack;
                     }
-                });
+                }
             }
             catch (IOException)
             {
