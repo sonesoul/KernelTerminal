@@ -8,9 +8,9 @@
         public override void Execute()
         {
             if (AppendNewLine)
-                Terminal.WriteLine(RawString).Wait();
+                Terminal.WriteLine(RawString);
             else 
-                Terminal.Write(RawString).Wait();
+                Terminal.Write(RawString);
         }
     }
 }
