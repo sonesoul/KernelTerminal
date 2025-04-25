@@ -157,7 +157,7 @@ namespace KernelTerminal
         /// <returns>Task representing the asynchronous operation.</returns>
         public static void Write<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            WriteColoredAsync(() => Console.Write(value.ToString()), foreColor, backColor);
+            WriteColored(() => Console.Write(value.ToString()), foreColor, backColor);
         }
         /// <summary>
         /// Writes the specified value to the console followed by a newline, using the specified foreground color.
@@ -165,7 +165,7 @@ namespace KernelTerminal
         /// <returns>Task representing the asynchronous operation.</returns>
         public static void WriteLine<T>(T value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
         {
-            WriteColoredAsync(() => Console.WriteLine(value.ToString()), foreColor, backColor);
+            WriteColored(() => Console.WriteLine(value.ToString()), foreColor, backColor);
         }
         /// <summary>
         /// Writes a newline symbol to the console.
@@ -179,7 +179,7 @@ namespace KernelTerminal
         /// <returns></returns>
         public static Task Clear() => Task.Run(Console.Clear);
 
-        private static void WriteColoredAsync(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
+        private static void WriteColored(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
             lock (_writeLock)
             {
