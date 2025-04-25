@@ -181,28 +181,21 @@ namespace KernelTerminal
 
         private static void WriteColoredAsync(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
         {
-            try
+            lock (_writeLock)
             {
-                lock (_writeLock)
+                if (IsOpened)
                 {
-                    if (IsOpened)
-                    {
-                        var tempFore = ForegroundColor;
-                        var tempBack = BackgroundColor;
+                    var tempFore = ForegroundColor;
+                    var tempBack = BackgroundColor;
 
-                        ForegroundColor = foreColor;
-                        BackgroundColor = backColor;
+                    ForegroundColor = foreColor;
+                    BackgroundColor = backColor;
 
-                        writeAction();
+                    writeAction();
 
-                        ForegroundColor = tempFore;
-                        BackgroundColor = tempBack;
-                    }
+                    ForegroundColor = tempFore;
+                    BackgroundColor = tempBack;
                 }
-            }
-            catch (IOException)
-            {
-                //Invalid handle exceptions
             }
         }
         #endregion
