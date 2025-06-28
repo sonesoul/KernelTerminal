@@ -94,8 +94,11 @@ namespace KernelTerminal
         public static void New()
         {
             WindowStyle style = _currentStyle;
+         
+            if (IsOpened)
+                Close();
 
-
+            Open(style);
         }
 
         public static WindowStyle GetCurrentStyle() => _currentStyle;
