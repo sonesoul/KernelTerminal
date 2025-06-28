@@ -11,6 +11,8 @@ namespace KernelTerminal
         public const uint STD_INPUT_HANDLE = 0xFFFFFFF6;
         public const uint STD_OUTPUT_HANDLE = 0xFFFFFFF5;
         public const uint STD_ERROR_HANDLE = 0xFFFFFFF4;
+
+        public const int LF_FACESIZE = 32;
         #endregion
 
         #region WindowConstants
@@ -36,6 +38,11 @@ namespace KernelTerminal
         public static extern IntPtr GetConsoleWindow();
         [DllImport("kernel32.dll")]
         public static extern bool SetConsoleTextAttribute(IntPtr hConsoleOutput, uint wAttributes);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool GetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
         #endregion
 
         #region User32
@@ -49,6 +56,27 @@ namespace KernelTerminal
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        #endregion
+
+        #region Structures
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct COORD
+        {
+            public short X;
+            public short Y;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct CONSOLE_FONT_INFO_EX
+        {
+            public int cbSize;
+            public int nFont;
+            public COORD dwFontSize;
+            public int FontFamily;
+            public int FontWeight;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = LF_FACESIZE)]
+            public string FaceName;
+        }
         #endregion
 
         private readonly static TextReader _originalIn = Console.In;
@@ -75,24 +103,41 @@ namespace KernelTerminal
         }
         public static IntPtr GetNewWindow()
         {
+            SafeFileHandle GetHandle(uint std) => new SafeFileHandle(GetStdHandle(std), ownsHandle: false);
+
             Console.SetIn(
                 new StreamReader(
                     new FileStream(
-                        new SafeFileHandle(GetStdHandle(STD_INPUT_HANDLE), false), FileAccess.Read)));
+                        GetHandle(STD_INPUT_HANDLE), FileAccess.Read)));
             
             Console.SetOut(
                 new StreamWriter(
                     new FileStream(
-                        new SafeFileHandle(GetStdHandle(STD_OUTPUT_HANDLE), false), FileAccess.Write))
+                        GetHandle(STD_OUTPUT_HANDLE), FileAccess.Write))
                 { AutoFlush = true });
 
             Console.SetError(
                 new StreamWriter(
                     new FileStream(
-                        new SafeFileHandle(GetStdHandle(STD_ERROR_HANDLE), false), FileAccess.Write))
+                        GetHandle(STD_ERROR_HANDLE), FileAccess.Write))
                 { AutoFlush = true });
 
             return GetConsoleWindow();
+        }
+
+        public static void SetFontSize(short width, short height)
+        {
+            IntPtr hnd = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            var cfi = new CONSOLE_FONT_INFO_EX();
+            cfi.cbSize = Marshal.SizeOf(cfi);
+
+            GetCurrentConsoleFontEx(hnd, false, ref cfi);
+
+            cfi.dwFontSize.X = width;
+            cfi.dwFontSize.Y = height;
+
+            SetCurrentConsoleFontEx(hnd, false, ref cfi);
         }
     }
 }
