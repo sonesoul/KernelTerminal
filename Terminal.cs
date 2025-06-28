@@ -108,14 +108,6 @@ namespace KernelTerminal
 
             NativeInterop.SetVisible(WindowHandle.Value, visible);
         }
-        public static void Focus()
-        {
-            if (!WindowHandle.HasValue)
-                return;
-
-            NativeInterop.FocusWindow(WindowHandle.Value);
-        }
-
         #region Output
 
         /// <summary>

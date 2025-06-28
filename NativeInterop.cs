@@ -36,9 +36,7 @@ namespace KernelTerminal
         public static extern IntPtr GetStdHandle(uint nStdHandle);
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();
-        [DllImport("kernel32.dll")]
-        public static extern bool SetConsoleTextAttribute(IntPtr hConsoleOutput, uint wAttributes);
-
+        
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -46,8 +44,6 @@ namespace KernelTerminal
         #endregion
 
         #region User32
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
@@ -95,7 +91,6 @@ namespace KernelTerminal
             _ = SetWindowLong(handle, GWL_EXSTYLE, (exStyle & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW);
         }
 
-        public static void FocusWindow(IntPtr handle) => SetForegroundWindow(handle);
         public static void SetVisible(IntPtr handle, bool visible) => ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
 
         public static void ResetConsole()
