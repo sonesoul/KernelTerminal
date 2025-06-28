@@ -79,7 +79,7 @@ namespace KernelTerminal
             
             NativeInterop.ResetConsole();
 
-            _currentStyle = WindowStyle.None;
+            _currentStyle = WindowStyle.Default;
             WindowHandle = null;
             IsOpened = false;
 
