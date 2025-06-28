@@ -100,9 +100,20 @@ namespace KernelTerminal
 
         public static WindowStyle GetCurrentStyle() => _currentStyle;
 
-        public static void SetFontSize(short width, short height)
+        public static void SetFontSize(short width, short height) => NativeInterop.SetFontSize(width, height);
+        public static void SetVisible(bool visible)
         {
-            NativeInterop.SetFontSize(width, height);
+            if (!WindowHandle.HasValue)
+                return;
+
+            NativeInterop.SetVisible(WindowHandle.Value, visible);
+        }
+        public static void Focus()
+        {
+            if (!WindowHandle.HasValue)
+                return;
+
+            NativeInterop.FocusWindow(WindowHandle.Value);
         }
 
         #region Output

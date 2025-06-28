@@ -95,6 +95,9 @@ namespace KernelTerminal
             _ = SetWindowLong(handle, GWL_EXSTYLE, (exStyle & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW);
         }
 
+        public static void FocusWindow(IntPtr handle) => SetForegroundWindow(handle);
+        public static void SetVisible(IntPtr handle, bool visible) => ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
+
         public static void ResetConsole()
         {
             Console.SetOut(_originalOut);
