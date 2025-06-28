@@ -100,6 +100,11 @@ namespace KernelTerminal
 
         public static WindowStyle GetCurrentStyle() => _currentStyle;
 
+        public static void SetFontSize(short width, short height)
+        {
+            NativeInterop.SetFontSize(width, height);
+        }
+
         #region Output
 
         /// <summary>
