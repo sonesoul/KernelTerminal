@@ -51,7 +51,7 @@ namespace KernelTerminal
             {
                 NativeInterop.HideButtons(windowHandle);
             }
-            if (style.HasFlag(WindowStyle.ProcessHidden))
+            if (style.HasFlag(WindowStyle.TabHidden))
             {
                 NativeInterop.HideFromTaskbar(windowHandle);
             }
