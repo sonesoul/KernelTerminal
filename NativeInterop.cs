@@ -79,16 +79,27 @@ namespace KernelTerminal
         private readonly static TextWriter _originalOut = Console.Out;
         private readonly static TextWriter _originalErr = Console.Error;
 
-        public static void HideButtons(IntPtr handle)
-        {
-            int style = GetWindowLong(handle, GWL_STYLE);
-            style &= ~WS_SYSMENU;
-            _ = SetWindowLong(handle, GWL_STYLE, style);
-        }
-        public static void HideFromTaskbar(IntPtr handle) 
+        public static void SetTabVisible(IntPtr handle, bool visible)
         {
             int exStyle = GetWindowLong(handle, GWL_EXSTYLE);
-            _ = SetWindowLong(handle, GWL_EXSTYLE, (exStyle & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW);
+
+            if (visible)
+                exStyle = (exStyle | WS_EX_APPWINDOW) & ~WS_EX_TOOLWINDOW;
+            else
+                exStyle = (exStyle & ~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW;
+
+            _ = SetWindowLong(handle, GWL_EXSTYLE, exStyle);
+        }
+        public static void SetButtonsVisible(IntPtr handle, bool visible)
+        {
+            int style = GetWindowLong(handle, GWL_STYLE);
+
+            if (visible)
+                style |= WS_SYSMENU;
+            else
+                style &= ~WS_SYSMENU;
+
+            _ = SetWindowLong(handle, GWL_STYLE, style);
         }
 
         public static void SetVisible(IntPtr handle, bool visible) => ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);

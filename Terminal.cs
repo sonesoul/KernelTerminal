@@ -36,7 +36,7 @@ namespace KernelTerminal
         
         #endregion
 
-        public static bool Open(WindowStyle style)
+        public static bool Open(WindowStyle style = WindowStyle.Default)
         {
             if (IsOpened)
                 return false;
@@ -47,14 +47,7 @@ namespace KernelTerminal
             IntPtr windowHandle;
             WindowHandle = windowHandle = NativeInterop.GetNewWindow();
 
-            if (style.HasFlag(WindowStyle.ButtonsHidden))
-            {
-                NativeInterop.HideButtons(windowHandle);
-            }
-            if (style.HasFlag(WindowStyle.TabHidden))
-            {
-                NativeInterop.HideFromTaskbar(windowHandle);
-            }
+            SetStyle(style);
 
             _currentStyle = style;
             
@@ -99,6 +92,20 @@ namespace KernelTerminal
         }
 
         public static WindowStyle GetCurrentStyle() => _currentStyle;
+
+        public static void SetStyle(WindowStyle style)
+        {
+            if (!WindowHandle.HasValue)
+                return;
+
+            NativeInterop.SetButtonsVisible(
+                WindowHandle.Value,
+                !style.HasFlag(WindowStyle.ButtonsHidden));
+
+            NativeInterop.SetTabVisible(
+                WindowHandle.Value, 
+                !style.HasFlag(WindowStyle.TabHidden));
+        }
 
         public static void SetFontSize(short width, short height) => NativeInterop.SetFontSize(width, height);
         public static void SetVisible(bool visible)
