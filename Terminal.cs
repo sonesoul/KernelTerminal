@@ -32,8 +32,7 @@ namespace KernelTerminal
         public static IntPtr? WindowHandle { get; private set; } = null;
 
         private static WindowStyle _currentStyle;
-        private readonly static object _writeLock = new object();
-        
+
         #endregion
 
         public static bool Open(WindowStyle style = WindowStyle.Default)
@@ -115,55 +114,5 @@ namespace KernelTerminal
 
             NativeInterop.SetVisible(WindowHandle.Value, visible);
         }
-        #region Output
-
-        /// <summary>
-        /// Writes the specified value to the console without a newline, using the specified foreground color.
-        /// </summary>
-        public static void Write(string value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
-        {
-            WriteColored(() => Console.Write(value), foreColor, backColor);
-        }
-        /// <summary>
-        /// Writes the specified value to the console followed by a newline, using the specified foreground color.
-        /// </summary>
-        public static void WriteLine(string value, ConsoleColor foreColor = ConsoleColor.Gray, ConsoleColor backColor = ConsoleColor.Black)
-        {
-            WriteColored(() => Console.WriteLine(value), foreColor, backColor);
-        }
-        /// <summary>
-        /// Writes a newline symbol to the console.
-        /// </summary>
-        public static void WriteLine() => Write(Environment.NewLine);
-
-        private static void WriteColored(Action writeAction, ConsoleColor foreColor, ConsoleColor backColor)
-        {
-            lock (_writeLock)
-            {
-                if (IsOpened)
-                {
-                    var tempFore = ForegroundColor;
-                    var tempBack = BackgroundColor;
-
-                    ForegroundColor = foreColor;
-                    BackgroundColor = backColor;
-
-                    try
-                    {
-                        writeAction();
-                    }
-                    catch
-                    {
-                        throw;
-                    }
-                    finally
-                    {
-                        ForegroundColor = tempFore;
-                        BackgroundColor = tempBack;
-                    }
-                }
-            }
-        }
-        #endregion
     }
 }
