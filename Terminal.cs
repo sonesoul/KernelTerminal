@@ -16,7 +16,7 @@ namespace KernelTerminal
 
         public static string Title { get => _title; set => Console.Title = _title = value; } 
         public static WindowStyle WindowStyle { get => _currentStyle; set => SetStyle(value); }
-        public static ITerminalIO IO { get; set; } 
+        public static ITerminalIO IO { get; set; } = new SystemConsoleIO();
 
         public static Action Opened { get; set; }
         public static Action Closed { get; set; }
