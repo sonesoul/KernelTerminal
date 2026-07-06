@@ -1,16 +1,16 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    internal class Write : Command
+    internal struct Write : ICommand
     {
         public bool AppendNewLine { get; set; }
 
-        public Write(Instruction instruction, bool appendNewLine) : base(instruction) => AppendNewLine = appendNewLine;
-        public override void Execute()
+        public Write(bool appendNewLine) => AppendNewLine = appendNewLine;
+        public readonly void Execute(Instruction i)
         {
             if (AppendNewLine)
-                Terminal.WriteLine(RawString);
+                Terminal.WriteLine(i.Raw);
             else 
-                Terminal.Write(RawString);
+                Terminal.Write(i.Raw);
         }
     }
 }

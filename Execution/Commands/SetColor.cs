@@ -2,22 +2,20 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal class SetColor : Command
+    internal struct SetColor : ICommand
     {
-        public SetColor(Instruction instruction) : base(instruction) { }
-        public override void Execute()
+        public readonly void Execute(Instruction i)
         {
-            if (RawString.Length == 0)
+            if (i.Raw.Length == 0)
             {
                 Terminal.WriteLine(Terminal.ForegroundColor.ToString());
             }
             else
             {
-                var args = Instruction.Split();
-                if (args.Count == 2)
+                if (i.Args.Count == 2)
                 {
-                    var type = args[0];
-                    ConsoleColor color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), args[1], true);
+                    var type = i.Args[0];
+                    ConsoleColor color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), i.Args[1], true);
 
                     if (type == "fore")
                         Terminal.ForegroundColor = color;

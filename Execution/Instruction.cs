@@ -1,55 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace KernelTerminal.Execution
 {
     public readonly struct Instruction
     {
-        public string RawString { get; }
-
-        public Instruction(string rawString)
+        public string Raw { get; }
+        public List<string> Args { get; }
+        
+        public Instruction(string rawString, List<string> args)
         {
-            RawString = rawString;
-        }
-
-        public List<string> Split()
-        {
-            var args = new List<string>();
-
-            if (RawString.Length > 0)
-            {
-                int depth = 0;
-                int startIndex = 0;
-
-                for (int i = 0; i < RawString.Length; i++)
-                {
-                    char c = RawString[i];
-
-                    if (c == Command.CloseBracket)
-                    {
-                        if (depth < 1)
-                            throw new InvalidSyntaxException();
-
-                        depth--;
-                        continue;
-                    }
-
-                    if (c == Command.OpenBracket)
-                    {
-                        depth++;
-                        continue;
-                    }
-
-                    if (c == Command.Splitter && depth == 0)
-                    {
-                        args.Add(RawString.Substring(startIndex, i - startIndex));
-                        startIndex = i + 1;
-                    }
-                }
-
-                args.Add(RawString.Substring(startIndex));
-            }
-
-            return args;
+            Raw = rawString;
+            Args = args;
         }
     }
 }

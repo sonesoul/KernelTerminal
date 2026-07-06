@@ -1,8 +1,7 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    internal class Exit : Command
+    internal struct Exit : ICommand
     {
-        public Exit(Instruction instruction) : base(instruction) { }
-        public override void Execute() => Terminal.Close();
+        public readonly void Execute(Instruction i) => Terminal.Close();
     }
 }

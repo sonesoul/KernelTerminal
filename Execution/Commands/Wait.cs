@@ -2,9 +2,8 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal class Wait : Command
+    internal struct Wait : ICommand
     {
-        public Wait(Instruction instruction) : base(instruction) { }
-        public override void Execute() => Task.Delay(int.Parse(RawString)).Wait();
+        public readonly void Execute(Instruction i) => Task.Delay(int.Parse(i.Raw)).Wait();
     }
 }

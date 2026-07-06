@@ -2,9 +2,11 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal class Async : Command
+    internal struct Async : ICommand
     {
-        public Async(Instruction instruction) : base(instruction) { }
-        public override void Execute() => Task.Run(() => Executor.Create(RawString).Execute());
+        public readonly void Execute(Instruction instruction)
+        {
+            Task.Run(() => Executor.Execute(instruction.Raw));
+        }
     }
 }

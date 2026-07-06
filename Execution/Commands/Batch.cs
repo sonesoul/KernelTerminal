@@ -1,13 +1,12 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    internal class Batch : Command
+    internal struct Batch : ICommand
     {
-        public Batch(Instruction instruction) : base(instruction) { }
-        public override void Execute()
+        public readonly void Execute(Instruction i)
         {
-            foreach (var item in Instruction.Split())
+            foreach (var item in i.Args)
             {
-                Executor.Create(item).Execute();
+                Executor.Execute(item);
             }
         }
     }

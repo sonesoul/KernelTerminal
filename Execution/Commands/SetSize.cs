@@ -2,12 +2,11 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal class SetSize : Command
+    internal struct SetSize : ICommand
     {
-        public SetSize(Instruction instruction) : base(instruction) { }    
-        public override void Execute()
+        public readonly void Execute(Instruction i)
         {
-            var args = Instruction.Split();
+            var args = i.Args;
 
             if (args.Count < 1)
             {
