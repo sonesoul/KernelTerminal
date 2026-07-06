@@ -4,7 +4,7 @@
     <TargetFramework>net5.0-windows7.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <FileVersion>2.0.0</FileVersion>
+    <FileVersion>3.0.0</FileVersion>
     <AssemblyVersion>3.0.0</AssemblyVersion>
   </PropertyGroup>
 
