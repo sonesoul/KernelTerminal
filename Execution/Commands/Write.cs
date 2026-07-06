@@ -9,7 +9,7 @@
         {
             if (AppendNewLine)
                 Terminal.WriteLine(i.Raw);
-            else 
+            else
                 Terminal.Write(i.Raw);
         }
     }

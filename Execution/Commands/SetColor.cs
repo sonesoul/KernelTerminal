@@ -8,7 +8,7 @@ namespace KernelTerminal.Execution.Commands
         {
             if (i.Raw.Length == 0)
             {
-                Terminal.WriteLine(Terminal.ForegroundColor.ToString());
+                Terminal.WriteLine(Console.ForegroundColor.ToString());
             }
             else
             {
@@ -18,9 +18,9 @@ namespace KernelTerminal.Execution.Commands
                     ConsoleColor color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), i.Args[1], true);
 
                     if (type == "fore")
-                        Terminal.ForegroundColor = color;
+                        Console.ForegroundColor = color;
                     else if (type == "back")
-                        Terminal.BackgroundColor = color;
+                        Console.BackgroundColor = color;
                     else 
                         throw new InvalidSyntaxException();
                 }
