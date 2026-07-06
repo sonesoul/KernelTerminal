@@ -2,7 +2,7 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal struct Async : ICommand
+    public struct Async : ICommand
     {
         public readonly void Execute(Instruction instruction)
         {

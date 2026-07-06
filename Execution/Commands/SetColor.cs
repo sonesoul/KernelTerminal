@@ -2,7 +2,7 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    internal struct SetColor : ICommand
+    public struct SetColor : ICommand
     {
         public readonly void Execute(Instruction i)
         {

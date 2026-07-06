@@ -5,7 +5,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <FileVersion>2.0.0</FileVersion>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

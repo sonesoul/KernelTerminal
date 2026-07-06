@@ -1,6 +1,6 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    internal struct Batch : ICommand
+    public struct Batch : ICommand
     {
         public readonly void Execute(Instruction i)
         {

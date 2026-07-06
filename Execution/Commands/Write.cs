@@ -1,6 +1,6 @@
 ﻿namespace KernelTerminal.Execution.Commands
 {
-    internal struct Write : ICommand
+    public struct Write : ICommand
     {
         public bool AppendNewLine { get; set; }
 
