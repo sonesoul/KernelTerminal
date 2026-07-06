@@ -26,7 +26,7 @@ namespace KernelTerminal.Execution
         public static Command Create(string stringCommand)
         {
             if (string.IsNullOrWhiteSpace(stringCommand))
-                return null;
+                throw new ArgumentNullException(nameof(stringCommand));
 
             stringCommand = stringCommand.Trim();
 
@@ -45,14 +45,12 @@ namespace KernelTerminal.Execution
                 args = new Instruction(stringCommand.Substring(openBracket + 1, closeBracket - openBracket - 1));
             }
 
-            Command executable = null;
-
-            if (_creators.TryGetValue(keyword, out CommandCreator creator))
+            if (!_creators.TryGetValue(keyword, out CommandCreator creator))
             {
-                executable = creator(args);
+                throw new KeyNotFoundException($"Couldn't find '{keyword}' command.");
             }
 
-            return executable;
+            return creator(args);
         }
 
         public static void RegisterCommand(string name, CommandCreator creator)
