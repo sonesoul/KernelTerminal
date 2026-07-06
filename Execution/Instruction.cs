@@ -17,8 +17,6 @@ namespace KernelTerminal.Execution
 
             if (RawString.Length > 0)
             {
-                var invalidSyntax = new InvalidSyntaxException();
-
                 int depth = 0;
                 int startIndex = 0;
 
@@ -29,7 +27,7 @@ namespace KernelTerminal.Execution
                     if (c == Command.CloseBracket)
                     {
                         if (depth < 1)
-                            throw invalidSyntax;
+                            throw new InvalidSyntaxException();
 
                         depth--;
                         continue;
