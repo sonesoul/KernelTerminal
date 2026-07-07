@@ -6,6 +6,7 @@
     <Nullable>disable</Nullable>
     <FileVersion>3.0.0</FileVersion>
     <AssemblyVersion>3.0.0</AssemblyVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
