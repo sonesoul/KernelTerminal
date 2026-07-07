@@ -6,7 +6,7 @@ namespace KernelTerminal.Execution.Commands
     {
         public readonly void Execute(Instruction instruction)
         {
-            Task.Run(() => Executor.Execute(instruction.Raw));
+            Task.Run(() => Executor.Invoke(instruction.Raw));
         }
     }
 }

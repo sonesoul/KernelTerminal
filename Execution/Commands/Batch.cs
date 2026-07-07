@@ -6,7 +6,7 @@
         {
             foreach (var item in i.Args)
             {
-                Executor.Execute(item);
+                Executor.Invoke(item);
             }
         }
     }

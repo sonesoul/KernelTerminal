@@ -2,7 +2,7 @@
 
 namespace KernelTerminal.Execution.Commands
 {
-    public struct Size : ICommand
+    public struct SetSize : ICommand
     {
         public readonly void Execute(Instruction i)
         {
