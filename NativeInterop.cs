@@ -76,9 +76,9 @@ namespace KernelTerminal
         }
         #endregion
 
-        private readonly static TextReader _originalIn = Console.In;
-        private readonly static TextWriter _originalOut = Console.Out;
-        private readonly static TextWriter _originalErr = Console.Error;
+        private readonly static TextReader _originalIn = TextReader.Null;
+        private readonly static TextWriter _originalOut = TextWriter.Null;
+        private readonly static TextWriter _originalErr = TextWriter.Null;
 
         public static void SetTabVisible(IntPtr handle, bool visible)
         {
@@ -102,6 +102,15 @@ namespace KernelTerminal
 
             _ = SetWindowLong(handle, GWL_STYLE, style);
         }
+
+        [DllImport("user32.dll")]
+        static extern bool MoveWindow(
+            IntPtr hWnd,
+            int X,
+            int Y,
+            int nWidth,
+            int nHeight,
+            bool repaint);
 
         public static void SetVisible(IntPtr handle, bool visible) => ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
 
@@ -148,6 +157,11 @@ namespace KernelTerminal
             cfi.dwFontSize.Y = height;
 
             SetCurrentConsoleFontEx(hnd, false, ref cfi);
+        }
+
+        public static void MoveWindow(int x, int y, int w, int h, bool repaint)
+        {
+            MoveWindow(GetConsoleWindow(), x, y, w, h, repaint);
         }
     }
 }
