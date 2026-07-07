@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace KernelTerminal
 {
@@ -112,13 +113,13 @@ namespace KernelTerminal
         }
         public static IntPtr GetNewWindow()
         {
-            SafeFileHandle GetHandle(uint std) => new SafeFileHandle(GetStdHandle(std), ownsHandle: false);
+            static SafeFileHandle GetHandle(uint std) => new(GetStdHandle(std), ownsHandle: false);
 
             Console.SetIn(
                 new StreamReader(
                     new FileStream(
                         GetHandle(STD_INPUT_HANDLE), FileAccess.Read)));
-            
+
             Console.SetOut(
                 new StreamWriter(
                     new FileStream(
