@@ -26,12 +26,14 @@ namespace KernelTerminal
         public static Action Opened { get; set; }
         public static Action Closed { get; set; }
 
-        private static WindowStyle _currentStyle;
+        private static WindowStyle _currentStyle = WindowStyle.Default;
         private static string _title = "Terminal";
 
         #endregion
 
-        public static bool Open(WindowStyle style = WindowStyle.Default)
+
+        public static bool Open() => Open(WindowStyle);
+        public static bool Open(WindowStyle style)
         {
             if (IsOpened)
                 return false;
