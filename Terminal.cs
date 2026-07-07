@@ -19,9 +19,9 @@ namespace KernelTerminal
         public static ITerminalIO IO { get; set; } = new SystemConsoleIO();
 
         public static int InitialWidth { get; set; } = 400;
-        public static int InitialHeight { get; set; } = 300;
-        public static int InitialX { get; set; } = 400;
-        public static int InitialY { get; set; } = 400;
+        public static int InitialHeight { get; set; } = 250;
+        public static int InitialX { get; set; } = 150;
+        public static int InitialY { get; set; } = 150;
 
         public static Action Opened { get; set; }
         public static Action Closed { get; set; }
