@@ -25,7 +25,7 @@ Terminal.New();
 ```
 
 ### IO
-There's `Terminal.IO` property to work with input and output. It's type is `ITerminalI` which defines what `Terminal.WriteLine`, `Terminal.ReadLine`, and some other IO method do.
+There's `Terminal.IO` property to work with input and output. It's type is `ITerminalIO` which defines what `Terminal.WriteLine`, `Terminal.ReadLine`, and some other IO method do.
 > [!NOTE]
 > Methods `Terminal.WriteLine`, `Terminal.ReadLine`, and others are needed for clarity. There's no difference if you use methods listed in `Terminal.IO` instead. 
 
