@@ -42,6 +42,10 @@ namespace KernelTerminal
         public static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CloseHandle(IntPtr hObject);
+
         #endregion
 
         #region User32
@@ -53,6 +57,15 @@ namespace KernelTerminal
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern bool MoveWindow(
+            IntPtr hWnd,
+            int X,
+            int Y,
+            int nWidth,
+            int nHeight,
+            bool repaint);
         #endregion
 
         #region Structures
@@ -102,15 +115,6 @@ namespace KernelTerminal
 
             _ = SetWindowLong(handle, GWL_STYLE, style);
         }
-
-        [DllImport("user32.dll")]
-        static extern bool MoveWindow(
-            IntPtr hWnd,
-            int X,
-            int Y,
-            int nWidth,
-            int nHeight,
-            bool repaint);
 
         public static void SetVisible(IntPtr handle, bool visible) => ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
 
