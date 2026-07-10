@@ -25,7 +25,7 @@ namespace KernelTerminal
 
         public string ReadLine()
         {
-            lock (_writeLock) 
+            lock (_readLock) 
                 return Console.ReadLine();
         }
         public ConsoleKeyInfo ReadKey(bool intercept = false)
