@@ -1,20 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows7.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <FileVersion>4.0.1</FileVersion>
-    <AssemblyVersion>4.0.1</AssemblyVersion>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+      <TargetFramework>net5.0-windows7.0</TargetFramework>
+      <ImplicitUsings>disable</ImplicitUsings>
+      <Nullable>disable</Nullable>
+      <IsAotCompatible>True</IsAotCompatible>
+
+	  <Version>4.1.0</Version>
+      <FileVersion>4.1.0</FileVersion>
+      <AssemblyVersion>4.1.0</AssemblyVersion>
+	  
+      <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageId>KernelTerminal</PackageId>
+	  <Authors>Esterhasz</Authors>
+	  <Company>Esterhasz</Company>
+	  
+	  <Description>
+	  	Provides Windows console management through native console APIs.
+	  </Description>
+	  
+	  <PackageTags>Console;Terminal;AllocConsole;Debug;cli;Command-Line;Windows;NativeInterop</PackageTags>
+	  <RepositoryUrl>https://github.com/Esterhasz/KernelTerminal</RepositoryUrl>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <IsAotCompatible>True</IsAotCompatible>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <IsAotCompatible>True</IsAotCompatible>
-  </PropertyGroup>
-
+	<ItemGroup>
+		<None Include="LICENSE" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+  
 </Project>
